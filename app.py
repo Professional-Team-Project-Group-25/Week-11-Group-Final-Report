@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report, accuracy_score, precision_sco
 st.set_page_config(page_title="Fraud Detection Pipeline", layout="wide")
 
 # 2. Sidebar Navigation
-st.sidebar.title("Dissertation Experiments")
+st.sidebar.title("Project Experiments")
 experiment = st.sidebar.radio(
     "Select Phase to Analyze:",
     (
