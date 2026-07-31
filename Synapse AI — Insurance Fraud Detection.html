@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)file:///C:/Users/Lenovo/Downloads/fraud_detection_project_webpage.html#problem -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse AI — Insurance Fraud Detection</title>
+<link href="./Synapse AI — Insurance Fraud Detection_files/css2" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#E63946;--teal:#4ECDC4;--gold:#F4A261;--navy:#0A0E1A;--navy2:#111827;
+  --card:#161D2E;--card2:#1C2539;--border:#2A3550;--text:#E8EAF0;--muted:#7A8BA8;
+  --green:#52B788;--purple:#9B72CF;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.6}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:2rem;position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(230,57,70,0.18) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 40% at 80% 80%,rgba(78,205,196,0.1) 0%,transparent 50%);
+}
+.scanner{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;
+}
+.scanner-line{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--teal),transparent);
+  opacity:0.4;
+  animation:scan 4s ease-in-out infinite;
+}
+@keyframes scan{0%{top:-2px;opacity:0}10%{opacity:0.6}90%{opacity:0.2}100%{top:100%;opacity:0}}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(230,57,70,0.12);border:1px solid rgba(230,57,70,0.3);
+  padding:6px 16px;border-radius:100px;font-size:12px;color:var(--red);
+  letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-bottom:1.5rem;
+  position:relative;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+.hero h1{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:700;line-height:1.05;letter-spacing:-0.03em;
+  margin-bottom:1.5rem;position:relative;
+}
+.hero h1 span{color:var(--red)}
+.hero-sub{
+  font-size:clamp(1rem,2.5vw,1.25rem);color:var(--muted);max-width:660px;
+  margin:0 auto 2.5rem;font-weight:400;line-height:1.7;position:relative;
+}
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:3rem;position:relative;
+}
+.stat-pill{
+  background:var(--card);border:1px solid var(--border);
+  padding:12px 24px;border-radius:100px;
+  display:flex;flex-direction:column;align-items:center;
+}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700}
+.stat-num.r{color:var(--red)} .stat-num.t{color:var(--teal)} .stat-num.g{color:var(--gold)}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase}
+.scroll-hint{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.scroll-hint .arr{animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,14,26,0.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.2s;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+
+/* ── SECTIONS ── */
+section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
+.section-eyebrow{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:1rem}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1rem}
+.section-desc{color:var(--muted);font-size:1rem;max-width:600px;line-height:1.8}
+
+/* ── PROBLEM STRIP ── */
+.problem-strip{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:3rem 2rem}
+.problem-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.problem-quote{
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:600;
+  line-height:1.4;
+}
+.problem-quote em{color:var(--red);font-style:normal}
+.problem-facts{display:flex;flex-direction:column;gap:1rem}
+.fact{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--card2);border:1px solid var(--border);border-radius:10px}
+.fact-icon{font-size:1.3rem;flex-shrink:0}
+.fact-text{font-size:0.9rem;color:var(--muted);line-height:1.5}
+.fact-text strong{color:var(--text)}
+
+/* ── EXPERIMENT CARDS ── */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2.5rem}
+.exp-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:1.75rem;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.2s;
+}
+.exp-card:hover{border-color:var(--card-accent);transform:translateY(-3px)}
+.exp-card.e1{--card-accent:var(--red)}
+.exp-card.e2{--card-accent:var(--teal)}
+.exp-card.e3{--card-accent:var(--gold);border-color:rgba(244,162,97,0.4)}
+.exp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--card-accent);
+}
+.exp-num{
+  font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--muted);
+  letter-spacing:0.1em;margin-bottom:0.75rem;
+}
+.exp-card h3{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem}
+.exp-card p{font-size:0.875rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem}
+.model-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.tag{font-size:11px;padding:4px 10px;border-radius:100px;border:1px solid;font-weight:500}
+.tag.red{color:var(--red);border-color:rgba(230,57,70,0.3);background:rgba(230,57,70,0.08)}
+.tag.teal{color:var(--teal);border-color:rgba(78,205,196,0.3);background:rgba(78,205,196,0.08)}
+.tag.gold{color:var(--gold);border-color:rgba(244,162,97,0.3);background:rgba(244,162,97,0.08)}
+.tag.purple{color:var(--purple);border-color:rgba(155,114,207,0.3);background:rgba(155,114,207,0.08)}
+.exp-metric{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border)}
+.metric-k{font-size:12px;color:var(--muted)}
+.metric-v{font-size:13px;font-weight:600;font-family:'Space Mono',monospace}
+
+/* ── PIPELINE VISUAL ── */
+.pipeline{margin:2.5rem 0;display:flex;align-items:center;flex-wrap:wrap;gap:0}
+.pipe-step{
+  flex:1;min-width:140px;background:var(--card2);border:1px solid var(--border);
+  padding:1.25rem;border-radius:12px;text-align:center;
+}
+.pipe-step .icon{font-size:1.5rem;margin-bottom:0.5rem}
+.pipe-step h4{font-size:0.85rem;font-weight:600;margin-bottom:0.25rem}
+.pipe-step p{font-size:0.75rem;color:var(--muted)}
+.pipe-arrow{color:var(--teal);font-size:1.2rem;padding:0 8px;flex-shrink:0}
+
+/* ── DEMO SECTION ── */
+.demo-shell{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  overflow:hidden;margin-top:2.5rem;
+}
+.demo-topbar{
+  background:var(--card2);border-bottom:1px solid var(--border);
+  padding:14px 20px;display:flex;align-items:center;gap:10px;
+}
+.demo-dot{width:12px;height:12px;border-radius:50%}
+.demo-url{
+  flex:1;text-align:center;font-size:12px;color:var(--muted);
+  font-family:'Space Mono',monospace;
+}
+.demo-tabs{
+  display:flex;border-bottom:1px solid var(--border);
+  background:var(--card2);
+}
+.demo-tab{
+  padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer;
+  border-bottom:2px solid transparent;color:var(--muted);transition:all 0.2s;
+}
+.demo-tab.active{color:var(--text);border-bottom-color:var(--teal)}
+.demo-content{padding:1.5rem;min-height:360px;position:relative}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* metrics row */
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.m-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.m-val{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700}
+.m-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+.badge-hybrid{display:inline-block;background:rgba(82,183,136,0.2);color:var(--green);border:1px solid rgba(82,183,136,0.4);font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600}
+.cls-table{width:100%;border-collapse:collapse;font-family:'Space Mono',monospace;font-size:12px}
+.cls-table th{color:var(--muted);font-weight:400;padding:6px 12px;text-align:right;border-bottom:1px solid var(--border)}
+.cls-table th:first-child{text-align:left}
+.cls-table td{padding:6px 12px;text-align:right;border-bottom:1px solid rgba(42,53,80,0.5)}
+.cls-table td:first-child{text-align:left;color:var(--muted)}
+.cls-table .hl{color:var(--teal)}
+
+/* feature bar chart */
+.feat-chart{display:flex;flex-direction:column;gap:10px}
+.feat-row{display:flex;align-items:center;gap:10px}
+.feat-label{font-size:11px;color:var(--muted);width:160px;text-align:right;flex-shrink:0;font-family:'Space Mono',monospace}
+.feat-bar-wrap{flex:1;background:var(--card2);border-radius:4px;height:22px;overflow:hidden}
+.feat-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;font-family:'Space Mono',monospace;white-space:nowrap;transition:width 1s ease}
+.feat-bar.nlp{background:rgba(244,162,97,0.8);color:var(--navy)}
+.feat-bar.tab{background:rgba(78,205,196,0.5);color:var(--navy)}
+
+/* triage table */
+.risk-filter{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.risk-btn{padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.risk-btn.active{border-color:var(--teal);color:var(--teal);background:rgba(78,205,196,0.1)}
+.triage-table{width:100%;border-collapse:collapse;font-size:12px}
+.triage-table th{color:var(--muted);font-size:11px;padding:8px;text-align:left;border-bottom:1px solid var(--border)}
+.triage-table td{padding:8px;border-bottom:1px solid rgba(42,53,80,0.4)}
+.risk-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
+.risk-badge.high{background:rgba(230,57,70,0.15);color:var(--red)}
+.risk-badge.med{background:rgba(244,162,97,0.15);color:var(--gold)}
+.risk-badge.low{background:rgba(82,183,136,0.15);color:var(--green)}
+.prob-bar{display:flex;align-items:center;gap:6px}
+.prob-mini{flex:1;height:6px;border-radius:3px;background:var(--card2)}
+.prob-fill{height:100%;border-radius:3px}
+.prob-num{font-family:'Space Mono',monospace;font-size:11px;width:36px;text-align:right}
+
+/* ── RESULTS ── */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2.5rem}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem}
+.result-card.best{border-color:rgba(230,57,70,0.5);background:rgba(230,57,70,0.04)}
+.result-card.hybrid{border-color:rgba(244,162,97,0.5);background:rgba(244,162,97,0.04)}
+.rc-model{font-size:12px;color:var(--muted);margin-bottom:0.5rem;font-family:'Space Mono',monospace}
+.rc-name{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem}
+.rc-metrics{display:flex;flex-direction:column;gap:8px}
+.rc-row{display:flex;justify-content:space-between;align-items:center}
+.rc-key{font-size:12px;color:var(--muted)}
+.rc-val{font-family:'Space Mono',monospace;font-size:13px;font-weight:700}
+.bench-note{background:rgba(155,114,207,0.08);border:1px solid rgba(155,114,207,0.2);border-radius:10px;padding:1rem 1.25rem;font-size:12px;color:var(--muted);line-height:1.6;margin-top:1.5rem}
+.bench-note strong{color:var(--purple)}
+
+/* ── ARCHITECTURE FLOW ── */
+.arch-flow{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:2rem;margin-top:2.5rem;
+}
+.arch-row{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem}
+.arch-step-num{
+  width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;
+}
+.arch-step-num.s1{background:rgba(230,57,70,0.2);color:var(--red)}
+.arch-step-num.s2{background:rgba(244,162,97,0.2);color:var(--gold)}
+.arch-step-num.s3{background:rgba(78,205,196,0.2);color:var(--teal)}
+.arch-step-content h4{font-size:0.9rem;font-weight:600;margin-bottom:4px}
+.arch-step-content p{font-size:0.8rem;color:var(--muted);line-height:1.5}
+.code-block{
+  background:var(--navy);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;margin-top:6px;font-family:'Space Mono',monospace;
+  font-size:11px;color:var(--teal);line-height:1.6;
+}
+.arch-connector{
+  width:1px;background:var(--border);height:20px;margin-left:16px;
+}
+
+/* ── TEAM ── */
+.team-grid{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+.team-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1.25rem;display:flex;align-items:center;gap:1rem;flex:1;min-width:200px;
+}
+.avatar{
+  width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.85rem;flex-shrink:0;
+}
+.a1{background:rgba(230,57,70,0.2);color:var(--red)}
+.a2{background:rgba(78,205,196,0.2);color:var(--teal)}
+.a3{background:rgba(244,162,97,0.2);color:var(--gold)}
+.team-name{font-size:0.9rem;font-weight:600}
+.team-id{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--card);border-top:1px solid var(--border);padding:2rem;
+  text-align:center;color:var(--muted);font-size:13px;
+}
+footer span{color:var(--text)}
+
+/* ── SCANLINE TOP DECORATION ── */
+.data-banner{
+  background:var(--navy2);border-bottom:1px solid var(--border);
+  padding:8px 2rem;overflow:hidden;white-space:nowrap;
+}
+.ticker{display:inline-block;animation:ticker 20s linear infinite;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+.ticker span{margin:0 2rem;color:var(--teal)}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+@media(max-width:700px){
+  .problem-inner{grid-template-columns:1fr}
+  .pipeline{flex-direction:column}
+  .pipe-arrow{transform:rotate(90deg)}
+  nav .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- data banner -->
+<div class="data-banner">
+  <span class="ticker">
+    <span>FRAUD ORACLE DATASET</span> 15,420 CLAIMS ANALYZED &nbsp;
+    <span>RF DETECTIONS</span> 766 FLAGGED &nbsp;
+    <span>XGB DETECTIONS</span> 1,074 FLAGGED &nbsp;
+    <span>HYBRID MODEL</span> 77% ACCURACY · 60.5% PRECISION · 47.3% RECALL &nbsp;
+    <span>DISTILBERT</span> 3 EPOCHS · 800 TRAINING NARRATIVES &nbsp;
+    <span>SMOTE BALANCE</span> 198 → 602 FRAUD SAMPLES &nbsp;
+    <span>ROC-AUC</span> 0.84 · F1: 0.51 &nbsp;
+    <!-- repeat for seamless loop -->
+    <span>FRAUD ORACLE DATASET</span> 15,420 CLAIMS ANALYZED &nbsp;
+    <span>RF DETECTIONS</span> 766 FLAGGED &nbsp;
+    <span>XGB DETECTIONS</span> 1,074 FLAGGED &nbsp;
+    <span>HYBRID MODEL</span> 77% ACCURACY · 60.5% PRECISION · 47.3% RECALL &nbsp;
+    <span>DISTILBERT</span> 3 EPOCHS · 800 TRAINING NARRATIVES &nbsp;
+  </span>
+</div>
+
+<!-- nav -->
+<nav>
+  <div class="nav-brand"><div class="nav-dot"></div>Synapse AI</div>
+  <div class="nav-links">
+    <a href="file:///C:/Users/Lenovo/Downloads/fraud_detection_project_webpage.html#problem">Problem</a>
+    <a href="file:///C:/Users/Lenovo/Downloads/fraud_detection_project_webpage.html#experiments">Experiments</a>
+    <a href="file:///C:/Users/Lenovo/Downloads/fraud_detection_project_webpage.html#demo">Live Demo</a>
+    <a href="file:///C:/Users/Lenovo/Downloads/fraud_detection_project_webpage.html#results">Results</a>
+    <a href="file:///C:/Users/Lenovo/Downloads/fraud_detection_project_webpage.html#team">Team</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="scanner"><div class="scanner-line"></div></div>
+  <div class="hero-eyebrow"><div class="dot"></div>MSc Data Science · Group 25 · UH 2026</div>
+  <h1>Catching Fraud<br>Before It <span>Costs</span> a Billion</h1>
+  <p class="hero-sub">A hybrid meta-learning architecture that combines DistilBERT's language understanding with XGBoost gradient boosting to detect insurance claim fraud at scale.</p>
+  <div class="hero-stats">
+    <div class="stat-pill"><span class="stat-num r">£1.1B+</span><span class="stat-label">Annual UK fraud cost</span></div>
+    <div class="stat-pill"><span class="stat-num t">16,420</span><span class="stat-label">Claims analysed</span></div>
+    <div class="stat-pill"><span class="stat-num g">3 Models</span><span class="stat-label">Tested &amp; compared</span></div>
+    <div class="stat-pill"><span class="stat-num" style="color:var(--purple)">0.84</span><span class="stat-label">Best ROC-AUC</span></div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <svg class="arr" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="problem-strip" id="problem">
+  <div class="problem-inner">
+    <div>
+      <div class="section-eyebrow">The Problem</div>
+      <p class="problem-quote">Insurance fraud costs the UK <em>over £1.1 billion</em> every year — and traditional rule-based systems can't keep up.</p>
+    </div>
+    <div class="problem-facts">
+      <div class="fact">
+        <span class="fact-icon">⚖️</span>
+        <span class="fact-text"><strong>Severe class imbalance:</strong> Only 6% of Fraud Oracle claims are fraudulent. A naïve classifier predicting "genuine" always achieves 94% accuracy whilst detecting zero fraud.</span>
+      </div>
+      <div class="fact">
+        <span class="fact-icon">🧠</span>
+        <span class="fact-text"><strong>Missed semantic signals:</strong> Structured tabular models ignore the narrative context of claims — the "how" and "why" that fraud patterns reveal in language.</span>
+      </div>
+      <div class="fact">
+        <span class="fact-icon">🔗</span>
+        <span class="fact-text"><strong>Research gap:</strong> NLP + tabular fusion for insurance fraud detection remains largely unexplored in the literature.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIMENTS -->
+<section id="experiments">
+  <div class="section-eyebrow">Three Progressive Experiments</div>
+  <h2 class="section-title">From Baselines to<br>Hybrid Intelligence</h2>
+  <p class="section-desc">Each experiment builds on the last — isolating what each modelling component contributes to fraud detection performance.</p>
+  <div class="exp-grid">
+    <div class="exp-card e1">
+      <div class="exp-num">EXPERIMENT 01</div>
+      <h3>Tabular Baselines</h3>
+      <p>Benchmark on the large, severely imbalanced Fraud Oracle dataset (15,420 records, 6% fraud) without SMOTE correction.</p>
+      <div class="model-tags">
+        <span class="tag red">Random Forest</span>
+        <span class="tag red">XGBoost</span>
+      </div>
+      <div class="exp-metric"><span class="metric-k">Dataset</span><span class="metric-v">Fraud Oracle (n=15,420)</span></div>
+      <div class="exp-metric"><span class="metric-k">Fraud prevalence</span><span class="metric-v" style="color:var(--red)">5.99%</span></div>
+    </div>
+    <div class="exp-card e2">
+      <div class="exp-num">EXPERIMENT 02</div>
+      <h3>Tabular + Deep Learning</h3>
+      <p>SMOTE oversampling applied to Insurance Claims dataset. BiLSTM introduced as deep learning comparator alongside ensemble.</p>
+      <div class="model-tags">
+        <span class="tag teal">RF + GridSearchCV</span>
+        <span class="tag teal">BiLSTM</span>
+        <span class="tag teal">XGBoost</span>
+        <span class="tag teal">Ensemble</span>
+      </div>
+      <div class="exp-metric"><span class="metric-k">SMOTE</span><span class="metric-v">198 → 602 samples</span></div>
+      <div class="exp-metric"><span class="metric-k">Best F1</span><span class="metric-v" style="color:var(--teal)">0.51</span></div>
+    </div>
+    <div class="exp-card e3">
+      <div class="exp-num">EXPERIMENT 03 — CORE INNOVATION</div>
+      <h3>Hybrid NLP Architecture</h3>
+      <p>Structured claim rows converted to natural language narratives, scored by fine-tuned DistilBERT, then used as a feature in XGBoost.</p>
+      <div class="model-tags">
+        <span class="tag gold">DistilBERT</span>
+        <span class="tag gold">XGBoost Meta-Learner</span>
+        <span class="tag purple">NLP Narratives</span>
+      </div>
+      <div class="exp-metric"><span class="metric-k">Architecture</span><span class="metric-v">102 features</span></div>
+      <div class="exp-metric"><span class="metric-k">NLP Contribution</span><span class="metric-v" style="color:var(--gold)">Confirmed ✓</span></div>
+    </div>
+  </div>
+
+  <!-- Pipeline -->
+  <div style="margin-top:3rem">
+    <div class="section-eyebrow">Experiment 3 Pipeline</div>
+    <div class="pipeline" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:1rem">
+      <div class="pipe-step">
+        <div class="icon">📋</div>
+        <h4>Tabular Rows</h4>
+        <p>Raw insurance claim features (40 cols)</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:1.5rem">→</div>
+      <div class="pipe-step">
+        <div class="icon">✍️</div>
+        <h4>NL Narrative</h4>
+        <p>Template converts rows to sentences</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:1.5rem">→</div>
+      <div class="pipe-step" style="border-color:rgba(244,162,97,0.4)">
+        <div class="icon">🤖</div>
+        <h4>DistilBERT</h4>
+        <p>Fine-tuned 3 epochs, fraud probability</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:1.5rem">→</div>
+      <div class="pipe-step">
+        <div class="icon">⚡</div>
+        <h4>XGBoost</h4>
+        <p>Meta-learner on 102 enriched features</p>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:1.5rem">→</div>
+      <div class="pipe-step" style="border-color:rgba(82,183,136,0.4)">
+        <div class="icon">🚨</div>
+        <h4>Risk Score</h4>
+        <p>Fraud probability + tier (High/Med/Low)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo" style="max-width:1100px;margin:0 auto;padding:5rem 2rem">
+  <div class="section-eyebrow">Application Demo</div>
+  <h2 class="section-title">FraudShield Live Dashboard</h2>
+  <p class="section-desc">An interactive Streamlit application operationalising all three experiments — from raw predictions to probability-tiered risk triage.</p>
+
+  <div class="demo-shell">
+    <div class="demo-topbar">
+      <div class="demo-dot" style="background:#E63946"></div>
+      <div class="demo-dot" style="background:#F4A261"></div>
+      <div class="demo-dot" style="background:#52B788"></div>
+      <div class="demo-url">fraudshield-ai.streamlit.app · Experiment 3: Hybrid Model (DistilBERT + XGBoost)</div>
+    </div>
+    <div class="demo-tabs">
+      <div class="demo-tab active" onclick="switchTab(&#39;metrics&#39;,this)">📊 Performance Metrics</div>
+      <div class="demo-tab" onclick="switchTab(&#39;xai&#39;,this)">🧠 Explainable AI (XAI)</div>
+      <div class="demo-tab" onclick="switchTab(&#39;triage&#39;,this)">🚨 Claims Triage</div>
+    </div>
+    <div class="demo-content">
+
+      <!-- TAB 1: metrics -->
+      <div class="tab-pane active" id="tab-metrics">
+        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem">Global Model Performance — Experiment 3: Hybrid AI Architecture</div>
+        <div class="metrics-row">
+          <div class="m-card">
+            <div class="m-val" style="color:var(--gold)">77.0%</div>
+            <div class="m-label">Overall Accuracy</div>
+            <div style="margin-top:6px"><span class="badge-hybrid">↑ Hybrid Edge</span></div>
+          </div>
+          <div class="m-card">
+            <div class="m-val" style="color:var(--teal)">60.5%</div>
+            <div class="m-label">Precision (Quality)</div>
+          </div>
+          <div class="m-card">
+            <div class="m-val" style="color:var(--red)">47.3%</div>
+            <div class="m-label">Recall (Capture Rate)</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:0.75rem;font-family:&#39;Space Mono&#39;,monospace">Detailed Classification Report:</div>
+        <table class="cls-table">
+          <tbody><tr><th></th><th>precision</th><th>recall</th><th>f1-score</th><th>support</th></tr>
+          <tr><td>0 (Genuine)</td><td class="hl">0.82</td><td class="hl">0.88</td><td class="hl">0.85</td><td>145</td></tr>
+          <tr><td>1 (Fraud)</td><td style="color:var(--gold)">0.60</td><td style="color:var(--gold)">0.47</td><td style="color:var(--gold)">0.53</td><td>55</td></tr>
+          <tr><td style="color:var(--muted)">accuracy</td><td></td><td></td><td class="hl">0.77</td><td>200</td></tr>
+          <tr><td style="color:var(--muted)">macro avg</td><td>0.71</td><td>0.68</td><td>0.69</td><td>200</td></tr>
+          <tr><td style="color:var(--muted)">weighted avg</td><td>0.76</td><td>0.77</td><td>0.76</td><td>200</td></tr>
+        </tbody></table>
+      </div>
+
+      <!-- TAB 2: XAI -->
+      <div class="tab-pane" id="tab-xai">
+        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem">Feature Importance — XGBoost Meta-Learner (top 10 features)</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:1.25rem;line-height:1.5">The <strong style="color:var(--gold)">distilbert_fraud_score</strong> feature (highlighted) ranks among the most predictive, validating the NLP contribution to fraud detection beyond tabular features alone.</div>
+        <div class="feat-chart" id="feat-chart"></div>
+      </div>
+
+      <!-- TAB 3: triage -->
+      <div class="tab-pane" id="tab-triage">
+        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.75rem">Claims Triage &amp; Risk Queue — Filter by risk tier to prioritise investigation workload</div>
+        <div class="risk-filter">
+          <button class="risk-btn active" onclick="filterRisk(&#39;all&#39;,this)">View All (200)</button>
+          <button class="risk-btn" onclick="filterRisk(&#39;high&#39;,this)">🔴 High Risk</button>
+          <button class="risk-btn" onclick="filterRisk(&#39;med&#39;,this)">🟡 Medium Risk</button>
+          <button class="risk-btn" onclick="filterRisk(&#39;low&#39;,this)">🟢 Low Risk</button>
+        </div>
+        <div id="triage-count" style="font-family:&#39;Space Mono&#39;,monospace;font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:0.75rem">12</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:0.5rem">Total Claims</div>
+        <table class="triage-table">
+          <tbody><tr><th>Risk</th><th>Fraud Probability</th><th>Age</th><th>Incident</th><th>Claim ($)</th></tr>
+          </tbody><tbody id="triage-body"><tr><td><span class="risk-badge high">High Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:98.9%;background:var(--red)"></div></div><span class="prob-num" style="color:var(--red)">98.9%</span></div></td><td>30</td><td style="font-size:11px;color:var(--muted)">Major Vehicle Collision</td><td style="font-family:Space Mono,monospace;font-size:11px">$71,710</td></tr><tr><td><span class="risk-badge high">High Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:97.2%;background:var(--red)"></div></div><span class="prob-num" style="color:var(--red)">97.2%</span></div></td><td>42</td><td style="font-size:11px;color:var(--muted)">Single Vehicle Collision</td><td style="font-family:Space Mono,monospace;font-size:11px">$65,200</td></tr><tr><td><span class="risk-badge high">High Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:95.5%;background:var(--red)"></div></div><span class="prob-num" style="color:var(--red)">95.5%</span></div></td><td>35</td><td style="font-size:11px;color:var(--muted)">Multi-vehicle Collision</td><td style="font-family:Space Mono,monospace;font-size:11px">$81,000</td></tr><tr><td><span class="risk-badge high">High Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:93.1%;background:var(--red)"></div></div><span class="prob-num" style="color:var(--red)">93.1%</span></div></td><td>28</td><td style="font-size:11px;color:var(--muted)">Vehicle Theft</td><td style="font-family:Space Mono,monospace;font-size:11px">$54,300</td></tr><tr><td><span class="risk-badge high">High Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:91.8%;background:var(--red)"></div></div><span class="prob-num" style="color:var(--red)">91.8%</span></div></td><td>51</td><td style="font-size:11px;color:var(--muted)">Major Damage Collision</td><td style="font-family:Space Mono,monospace;font-size:11px">$77,500</td></tr><tr><td><span class="risk-badge med">Medium Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:68.4%;background:var(--gold)"></div></div><span class="prob-num" style="color:var(--gold)">68.4%</span></div></td><td>44</td><td style="font-size:11px;color:var(--muted)">Parked Car Collision</td><td style="font-family:Space Mono,monospace;font-size:11px">$28,900</td></tr><tr><td><span class="risk-badge med">Medium Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:62.1%;background:var(--gold)"></div></div><span class="prob-num" style="color:var(--gold)">62.1%</span></div></td><td>38</td><td style="font-size:11px;color:var(--muted)">Single Vehicle Crash</td><td style="font-family:Space Mono,monospace;font-size:11px">$32,100</td></tr><tr><td><span class="risk-badge med">Medium Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:55.7%;background:var(--gold)"></div></div><span class="prob-num" style="color:var(--gold)">55.7%</span></div></td><td>29</td><td style="font-size:11px;color:var(--muted)">Minor Vehicle Accident</td><td style="font-family:Space Mono,monospace;font-size:11px">$18,500</td></tr><tr><td><span class="risk-badge med">Medium Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:48.3%;background:var(--gold)"></div></div><span class="prob-num" style="color:var(--gold)">48.3%</span></div></td><td>56</td><td style="font-size:11px;color:var(--muted)">Fender Bender</td><td style="font-family:Space Mono,monospace;font-size:11px">$12,000</td></tr><tr><td><span class="risk-badge low">Low Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:22.1%;background:var(--green)"></div></div><span class="prob-num" style="color:var(--green)">22.1%</span></div></td><td>61</td><td style="font-size:11px;color:var(--muted)">Minor Parking Scrape</td><td style="font-family:Space Mono,monospace;font-size:11px">$3,800</td></tr><tr><td><span class="risk-badge low">Low Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:15.5%;background:var(--green)"></div></div><span class="prob-num" style="color:var(--green)">15.5%</span></div></td><td>47</td><td style="font-size:11px;color:var(--muted)">Windscreen Crack</td><td style="font-family:Space Mono,monospace;font-size:11px">$1,200</td></tr><tr><td><span class="risk-badge low">Low Risk</span></td><td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:8.3%;background:var(--green)"></div></div><span class="prob-num" style="color:var(--green)">8.3%</span></div></td><td>33</td><td style="font-size:11px;color:var(--muted)">Rear-end Minor</td><td style="font-family:Space Mono,monospace;font-size:11px">$4,500</td></tr></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="section-eyebrow">Cross-Experiment Results</div>
+  <h2 class="section-title">What the Numbers Say</h2>
+  <p class="section-desc">Comprehensive metric comparison across all models. F1-score on the fraud class is the primary KPI, given severe class imbalance.</p>
+  <div class="results-grid">
+    <div class="result-card best">
+      <div class="rc-model">EXPERIMENT 2</div>
+      <div class="rc-name">Random Forest Baseline ★</div>
+      <div class="rc-metrics">
+        <div class="rc-row"><span class="rc-key">Accuracy</span><span class="rc-val" style="color:var(--red)">79%</span></div>
+        <div class="rc-row"><span class="rc-key">Precision (Fraud)</span><span class="rc-val" style="color:var(--red)">0.58</span></div>
+        <div class="rc-row"><span class="rc-key">Recall (Fraud)</span><span class="rc-val" style="color:var(--red)">0.45</span></div>
+        <div class="rc-row"><span class="rc-key">F1-Score (Fraud)</span><span class="rc-val" style="color:var(--red)">0.51</span></div>
+        <div class="rc-row"><span class="rc-key">ROC-AUC</span><span class="rc-val" style="color:var(--red)">0.84</span></div>
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-model">EXPERIMENT 2</div>
+      <div class="rc-name">BiLSTM (tuned, lr=0.001)</div>
+      <div class="rc-metrics">
+        <div class="rc-row"><span class="rc-key">Accuracy</span><span class="rc-val">69.5%</span></div>
+        <div class="rc-row"><span class="rc-key">F1-Score (Fraud)</span><span class="rc-val">0.44</span></div>
+        <div class="rc-row"><span class="rc-key">ROC-AUC</span><span class="rc-val">0.82</span></div>
+        <div style="margin-top:0.75rem;font-size:11px;color:var(--muted);line-height:1.5">Underperforms RF on n=1,000 — deep learning is data-hungry. No genuine sequential structure for LSTM to exploit.</div>
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-model">EXPERIMENT 2</div>
+      <div class="rc-name">Hybrid RF + BiLSTM Ensemble</div>
+      <div class="rc-metrics">
+        <div class="rc-row"><span class="rc-key">Accuracy</span><span class="rc-val">78%</span></div>
+        <div class="rc-row"><span class="rc-key">Precision</span><span class="rc-val">0.58</span></div>
+        <div class="rc-row"><span class="rc-key">Recall</span><span class="rc-val">0.39</span></div>
+        <div class="rc-row"><span class="rc-key">F1-Score</span><span class="rc-val">0.46</span></div>
+        <div class="rc-row"><span class="rc-key">ROC-AUC</span><span class="rc-val">0.84</span></div>
+      </div>
+    </div>
+    <div class="result-card hybrid">
+      <div class="rc-model">EXPERIMENT 3 — CORE RESEARCH</div>
+      <div class="rc-name">DistilBERT + XGBoost Hybrid</div>
+      <div class="rc-metrics">
+        <div class="rc-row"><span class="rc-key">Accuracy</span><span class="rc-val" style="color:var(--gold)">77%</span></div>
+        <div class="rc-row"><span class="rc-key">Precision</span><span class="rc-val" style="color:var(--gold)">0.60</span></div>
+        <div class="rc-row"><span class="rc-key">Recall</span><span class="rc-val" style="color:var(--gold)">0.47</span></div>
+        <div class="rc-row"><span class="rc-key">F1-Score (fraud class)</span><span class="rc-val" style="color:var(--gold)">0.53*</span></div>
+        <div style="margin-top:0.75rem;font-size:11px;color:var(--muted);line-height:1.5">*NLP feature importance confirms DistilBERT score adds predictive signal beyond tabular features. Feasibility proven.</div>
+      </div>
+    </div>
+  </div>
+  <div class="bench-note">
+    <strong>Literature benchmark:</strong> Abdallah et al. (2016) report ROC-AUC of <strong>0.80–0.90</strong> for well-performing fraud classifiers on insurance data. Our RF baseline AUC of <strong>0.84</strong> falls squarely within this range. ✓
+  </div>
+</section>
+
+<!-- ARCHITECTURE DETAIL -->
+<section style="max-width:1100px;margin:0 auto;padding:0 2rem 5rem">
+  <div class="section-eyebrow">Hybrid Architecture Deep Dive</div>
+  <h2 class="section-title">How the NLP Pipeline Works</h2>
+  <div class="arch-flow">
+    <div class="arch-row">
+      <div class="arch-step-num s1">01</div>
+      <div class="arch-step-content">
+        <h4>Narrative Template Engineering</h4>
+        <p>Each structured claim row is converted to a natural language sentence using a hand-crafted template. This bridges tabular data and Transformer models.</p>
+        <div class="code-block">"A 30-year-old customer from IN reported a<br>&nbsp;Major Damage Single Vehicle Collision incident.<br>&nbsp;Authorities were YES to the scene.<br>&nbsp;Total claim: $71,710 incl. vehicle: $37,520."</div>
+      </div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-row">
+      <div class="arch-step-num s2">02</div>
+      <div class="arch-step-content">
+        <h4>DistilBERT Fine-Tuning</h4>
+        <p>distilbert-base-uncased fine-tuned for binary sequence classification (fraud=1, genuine=0). 3 epochs, batch size 16, 800 training narratives. 40% fewer parameters than BERT-base, 60% faster inference.</p>
+        <div class="code-block">distilbert_fraud_score ∈ [0, 1]<br>→ appended as 102nd feature column</div>
+      </div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-row">
+      <div class="arch-step-num s3">03</div>
+      <div class="arch-step-content">
+        <h4>XGBoost Meta-Learner</h4>
+        <p>Trained on 102 features (101 tabular one-hot + distilbert_fraud_score). The meta-learner simultaneously exploits structured signals and the semantic fraud probability from DistilBERT.</p>
+        <div class="code-block">n_estimators=100 · max_depth=4<br>eval_metric='logloss' · random_state=42</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-eyebrow">The Team</div>
+  <h2 class="section-title">Group 25</h2>
+  <p class="section-desc">MSc Data Science · University of Hertfordshire · 7PAM2033 · Supervisor: Paurush Punyasheel</p>
+  <div class="team-grid">
+    <div class="team-card"><div class="avatar a1">VP</div><div><div class="team-name">Vrushali Patel</div><div class="team-id">24158441</div></div></div>
+    <div class="team-card"><div class="avatar a2">PP</div><div><div class="team-name">Prince Patel</div><div class="team-id">24158566</div></div></div>
+    <div class="team-card"><div class="avatar a3">NK</div><div><div class="team-name">Nimra Khizar</div><div class="team-id">24142732</div></div></div>
+  </div>
+  <div style="margin-top:1.5rem;font-size:12px;color:var(--muted)">
+    GitHub: <span style="color:var(--teal);font-family:&#39;Space Mono&#39;,monospace">github.com/orgs/Professional-Team-Project-Group-25</span> · Submitted: 24th July 2026
+  </div>
+</section>
+
+<footer>
+  <p>Synapse AI · <span>A Hybrid Meta-Learning Architecture for Insurance Fraud Detection</span></p>
+  <p style="margin-top:4px">Integrating DistilBERT Textual Embeddings with Gradient Boosting · University of Hertfordshire 2026</p>
+</footer>
+
+<script>
+// TAB SWITCHING
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'xai') renderFeatChart();
+  if (id === 'triage') renderTriage('all');
+}
+
+// FEATURE IMPORTANCE CHART
+var featData = [
+  {name:'distilbert_fraud_score', val:0.072, nlp:true},
+  {name:'occupation_craft-repair', val:0.069, nlp:false},
+  {name:'vehicle_claim', val:0.063, nlp:false},
+  {name:'total_claim_amount', val:0.058, nlp:false},
+  {name:'incident_severity_Major', val:0.051, nlp:false},
+  {name:'months_as_customer', val:0.048, nlp:false},
+  {name:'occupation_exec-managerial', val:0.043, nlp:false},
+  {name:'umbrella_limit', val:0.041, nlp:false},
+  {name:'number_of_vehicles', val:0.038, nlp:false},
+  {name:'capital_gains', val:0.033, nlp:false},
+];
+var chartRendered = false;
+function renderFeatChart() {
+  if (chartRendered) return;
+  chartRendered = true;
+  var max = Math.max.apply(null, featData.map(function(d){return d.val}));
+  var html = featData.map(function(d) {
+    var pct = Math.round(d.val / max * 100);
+    return '<div class="feat-row">' +
+      '<div class="feat-label">' + d.name + '</div>' +
+      '<div class="feat-bar-wrap"><div class="feat-bar ' + (d.nlp?'nlp':'tab') + '" style="width:' + pct + '%">' +
+      (d.nlp ? '★ ' : '') + d.val.toFixed(3) + '</div></div></div>';
+  }).join('');
+  document.getElementById('feat-chart').innerHTML = html;
+}
+
+// TRIAGE DATA
+var triageData = [
+  {risk:'high',prob:98.9,age:30,incident:'Major Vehicle Collision',claim:71710},
+  {risk:'high',prob:97.2,age:42,incident:'Single Vehicle Collision',claim:65200},
+  {risk:'high',prob:95.5,age:35,incident:'Multi-vehicle Collision',claim:81000},
+  {risk:'high',prob:93.1,age:28,incident:'Vehicle Theft',claim:54300},
+  {risk:'high',prob:91.8,age:51,incident:'Major Damage Collision',claim:77500},
+  {risk:'med',prob:68.4,age:44,incident:'Parked Car Collision',claim:28900},
+  {risk:'med',prob:62.1,age:38,incident:'Single Vehicle Crash',claim:32100},
+  {risk:'med',prob:55.7,age:29,incident:'Minor Vehicle Accident',claim:18500},
+  {risk:'med',prob:48.3,age:56,incident:'Fender Bender',claim:12000},
+  {risk:'low',prob:22.1,age:61,incident:'Minor Parking Scrape',claim:3800},
+  {risk:'low',prob:15.5,age:47,incident:'Windscreen Crack',claim:1200},
+  {risk:'low',prob:8.3,age:33,incident:'Rear-end Minor',claim:4500},
+];
+var riskColors = {high:'var(--red)',med:'var(--gold)',low:'var(--green)'};
+
+function filterRisk(tier, btn) {
+  document.querySelectorAll('.risk-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  renderTriage(tier);
+}
+function renderTriage(tier) {
+  var rows = tier === 'all' ? triageData : triageData.filter(function(d){return d.risk===tier});
+  document.getElementById('triage-count').textContent = rows.length;
+  var html = rows.map(function(d) {
+    var label = d.risk === 'high' ? 'High Risk' : d.risk === 'med' ? 'Medium Risk' : 'Low Risk';
+    var c = riskColors[d.risk];
+    return '<tr>' +
+      '<td><span class="risk-badge ' + d.risk + '">' + label + '</span></td>' +
+      '<td><div class="prob-bar"><div class="prob-mini"><div class="prob-fill" style="width:' + d.prob + '%;background:' + c + '"></div></div><span class="prob-num" style="color:' + c + '">' + d.prob.toFixed(1) + '%</span></div></td>' +
+      '<td>' + d.age + '</td>' +
+      '<td style="font-size:11px;color:var(--muted)">' + d.incident + '</td>' +
+      '<td style="font-family:Space Mono,monospace;font-size:11px">$' + d.claim.toLocaleString() + '</td>' +
+      '</tr>';
+  }).join('');
+  document.getElementById('triage-body').innerHTML = html;
+}
+renderTriage('all');
+</script>
+
+
+</body></html>
